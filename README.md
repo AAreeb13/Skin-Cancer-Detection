@@ -2,6 +2,10 @@
 
 ## About
 
+Problem: Classify images of two different types of moles
+Success Metric: F1_score, accuracy, recall
+
+
 ## Guide
 
 1. Make sure you have pip and python installed
@@ -10,6 +14,7 @@
     *source venv/bin/activate*  # macOS/Linux
     *.\venv\Scripts\activate*   # Windows
 4. run *pip install -r requirements.txt*
+5. run *python main.py* or *python3 main.py*
 
 
 
