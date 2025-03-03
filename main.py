@@ -30,7 +30,7 @@ class CNN(nn.Module):
         for epoch in range(epochs):
             running_loss = 0.0
             for i, data in enumerate(trainloader, 0):
-                inputs, labels = data
+                inputs, labels = data["train"]
 
                 optimizer.zero_grad()
 
