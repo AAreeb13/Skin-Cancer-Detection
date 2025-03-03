@@ -27,9 +27,7 @@ class CNN(nn.Module):
 
         for epoch in range(epochs):
             running_loss = 0.0
-            for i, data in enumerate(trainloader, 0):
-                X, y = data["train"]
-
+            for X, y in trainloader:
                 self.optimizer.zero_grad()
 
                 # forward + backward + optimize
