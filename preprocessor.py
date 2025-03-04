@@ -1,5 +1,7 @@
+import random
 import kagglehub
 import os
+import numpy as np
 import torch
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
@@ -12,8 +14,18 @@ class Dataset():
         self.test = test_data
 
 class Preprocessor():
-    def __init__(self, batch_size=32):
+    def __init__(self, batch_size=32, seed=40):
         self.batch_size = batch_size  # Default batch size
+        self.seed = seed
+        self.set_seed()  # Call this function to set the seed
+
+    def set_seed(self):
+        # Set seeds for reproducibility
+        random.seed(self.seed)
+        np.random.seed(self.seed)
+        torch.manual_seed(self.seed)
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed(self.seed)
     
     def load_dataset(self):
         dataset_path = kagglehub.dataset_download("fanconic/skin-cancer-malignant-vs-benign")
@@ -61,6 +73,7 @@ class Preprocessor():
     def process(self):
         train_dir, test_dir = self.load_dataset()
         dataset = self.split_dataset(self.transform_dataset(train_dir, test_dir))
+        self.dataset = dataset  # Save dataset for later use
         dataloaders = self.get_dataloaders(dataset)
         return dataloaders  # Returns dataloaders instead of raw dataset
 
@@ -72,3 +85,6 @@ if __name__ == '__main__':
     for X, y in dataloaders["train"]:
         print(f"Sample batch shape: {X.shape}, Labels shape: {y.shape}")  # Expect (batch_size, 3, 224, 224)
         break
+
+
+
