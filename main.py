@@ -13,9 +13,10 @@ class CNN(nn.Module):
         self.bn2 = nn.BatchNorm2d(64)
         self.conv3 = nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, padding=1)
         self.bn3 = nn.BatchNorm2d(128)
-        self.maxPool = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.maxPool = nn.MaxPool2d(kernel_size=3, stride=3)
         self.dropout = nn.Dropout(0.5)
-        self.linear = nn.Linear(128 * 28 * 28, 1)
+        self.linear = nn.Linear(128 * 8 * 8, 1) # 3-layer
+        # self.linear = nn.Linear(64 * 56 * 56, 1) # 2-layer
 
     def forward(self, x):
         x = self.conv1(x)
@@ -37,7 +38,7 @@ class CNN(nn.Module):
         self.eval()  # Switch to evaluation mode
         with torch.no_grad():
             outputs = torch.sigmoid(self.forward(X)).squeeze(1)
-            return (outputs > 0.6).int()  # Convert to binary (0 or 1)
+            return (outputs > 0.4).int()  # Convert to binary (0 or 1)
 
 if __name__ == '__main__':
     print('Starting training')
