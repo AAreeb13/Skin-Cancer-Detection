@@ -14,6 +14,9 @@ num_epochs = 5
 batch_size = 4
 learning_rate = 0.001
 
+
+########################
+
 # dataset has PILImage images of range [0, 1]. 
 # We transform them to Tensors of normalized range [-1, 1]
 transform = transforms.Compose(
@@ -46,6 +49,8 @@ def imshow(img):
 # get some random training images
 dataiter = iter(train_loader)
 images, labels = next(dataiter)
+
+######################## REPLACE ALL OF THE ABOVE WITH AREEB PREPROCESSOR CODE
 
 # show images
 imshow(torchvision.utils.make_grid(images))
