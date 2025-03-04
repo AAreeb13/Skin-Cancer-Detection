@@ -1,0 +1,43 @@
+Starting training
+Device: cpu
+Warning: Looks like you're using an outdated `kagglehub` version (installed: 0.3.9), please consider upgrading to the latest version (0.3.10).
+Downloaded Dataset Path: C:\Users\areeb\.cache\kagglehub\datasets\fanconic\skin-cancer-malignant-vs-benign\versions\4
+Total images: 3297
+Training set: 2307 images
+Validation set: 494 images
+Test set: 496 images
+Epoch 1/10
+Training Loss: 1.5812
+Validation Loss: 0.8007, Validation Accuracy: 79.76%
+Best model saved based on validation loss.
+Epoch 2/10
+Training Loss: 0.4519
+Validation Loss: 0.4035, Validation Accuracy: 77.94%
+Best model saved based on validation loss.
+Epoch 3/10
+Training Loss: 0.3608
+Validation Loss: 0.4519, Validation Accuracy: 79.55%
+Epoch 4/10
+Training Loss: 0.3300
+Validation Loss: 0.3559, Validation Accuracy: 82.59%
+Best model saved based on validation loss.
+Epoch 5/10
+Training Loss: 0.3137
+Validation Loss: 0.3532, Validation Accuracy: 83.60%
+Best model saved based on validation loss.
+Epoch 6/10
+Training Loss: 0.2915
+Validation Loss: 0.5597, Validation Accuracy: 73.68%
+Epoch 7/10
+Training Loss: 0.3561
+Validation Loss: 0.3725, Validation Accuracy: 82.39%
+Epoch 8/10
+Training Loss: 0.3012
+Validation Loss: 0.3714, Validation Accuracy: 81.78%
+Epoch 9/10
+Training Loss: 0.2508
+Validation Loss: 0.3699, Validation Accuracy: 82.79%
+Epoch 10/10
+Training Loss: 0.2425
+Validation Loss: 0.3805, Validation Accuracy: 81.17%
+Training complete.
