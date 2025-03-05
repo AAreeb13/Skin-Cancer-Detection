@@ -9,7 +9,7 @@ if __name__ == '__main__':
     print('Device:', device)
 # Initialize a new model instance first
     model = CNN()
-    model.load_state_dict(torch.load('best_skin_cancer_model_state.pth'))
+    model.load_state_dict(torch.load('current_best_skin_cancer_model_state.pth'))
     # model.load_state_dict(torch.load('current_model.pth'))
 
     model.to(device)  # Move to the correct device (CPU or GPU)

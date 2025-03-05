@@ -65,11 +65,11 @@ if __name__ == '__main__':
     dataloaders = preprocessor.process()
     best_val_loss = float('inf')
 
-    optimizer=torch.optim.Adam(model.parameters())
+    optimizer=torch.optim.AdamW(model.parameters())
     bce = nn.BCEWithLogitsLoss()
 
     model.to(device)
-    epochs = 10
+    epochs = 20
 
     # ----------------TRAIN STARTS HERE----------------
     model.train()
