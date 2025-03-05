@@ -14,11 +14,16 @@ class CNN(nn.Module):
         self.conv3 = nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3, padding=1)
         self.bn3 = nn.BatchNorm2d(128)
         self.maxPool = nn.MaxPool2d(kernel_size=3, stride=3)
-        self.dropout = nn.Dropout(0.5)
-        self.linear = nn.Linear(128 * 8 * 8, 1) # 3-layer
-        # self.linear = nn.Linear(64 * 56 * 56, 1) # 2-layer
+        
+        # Fully connected layers
+        self.fc1 = nn.Linear(128 * 8 * 8, 512)  # New hidden layer 1
+        self.fc2 = nn.Linear(512, 128)          # New hidden layer 2
+        self.output = nn.Linear(128, 1)         # Output layer
+
+        self.dropout = nn.Dropout(0.5)          # Dropout to prevent overfitting
 
     def forward(self, x):
+        # Convolutional layers
         x = self.conv1(x)
         x = F.relu(self.bn1(x))
         x = self.maxPool(x)
@@ -28,9 +33,17 @@ class CNN(nn.Module):
         x = self.conv3(x)
         x = F.relu(self.bn3(x))
         x = self.maxPool(x)
+
+        # Flatten the tensor for fully connected layers
         x = x.view(x.size(0), -1)
+
+        # Fully connected layers with ReLU and Dropout
+        x = F.relu(self.fc1(x))
         x = self.dropout(x)
-        x = self.linear(x)
+        x = F.relu(self.fc2(x))
+        x = self.dropout(x)
+        x = self.output(x)  # No activation for output layer
+        
         return x
 
 
