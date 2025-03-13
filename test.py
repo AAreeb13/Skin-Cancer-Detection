@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+import train
 from main import CNN
 from preprocessor import Preprocessor
 
@@ -8,7 +9,7 @@ if __name__ == '__main__':
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print('Device:', device)
 # Initialize a new model instance first
-    model = CNN()
+    model = train.CNN()
     model.load_state_dict(torch.load('best_skin_cancer_model_state.pth'))
     # model.load_state_dict(torch.load('current_model.pth'))
 
@@ -19,11 +20,16 @@ if __name__ == '__main__':
     preprocessor = Preprocessor()
     dataloaders = preprocessor.process()
 
-    epochs = 5
     # Load model
+    print(model.training_loss)
+    print(model.validation_loss)
 
     total_predictions = 0
     correct_predictions = 0
+
+    # Initialize confusion matrix (2x2 for binary classification)
+    confusion_matrix = [[0, 0], [0, 0]]
+
     with torch.no_grad():
         for i, (inputs, labels) in enumerate(dataloaders['test']):
             inputs = inputs.to(device)  # Move images to the same device as the model
@@ -31,6 +37,20 @@ if __name__ == '__main__':
             
             # Use the predict method
             predictions = model.predict(inputs)
+
+            # Update confusion matrix
+            for pred, label in zip(predictions.cpu().numpy(), labels.cpu().numpy()):
+                if label == 0:
+                    if pred == 0:
+                        confusion_matrix[0][0] += 1  # True Negative
+                    else:
+                        confusion_matrix[0][1] += 1  # False Positive
+                else:
+                    if pred == 0:
+                        confusion_matrix[1][0] += 1  # False Negative
+                    else:
+                        confusion_matrix[1][1] += 1  # True Positive
+
             
             # Print results
             # print("Predictions:", predictions)
@@ -40,7 +60,28 @@ if __name__ == '__main__':
             total = labels.size(0)
             total_predictions += total
             accuracy = correct / total * 100
-            print(f"Batch[{i}] Accuracy: {accuracy:.2f}%")
+            # print(f"Batch[{i}] Accuracy: {accuracy:.2f}%")
             # Stop after first batch for demo
     accuracy = correct_predictions / total_predictions * 100
     print(f"Total Accuracy: {accuracy:.2f}%")
+
+    TN = confusion_matrix[0][0]
+    FP = confusion_matrix[0][1]
+    FN = confusion_matrix[1][0]
+    TP = confusion_matrix[1][1]
+
+    P_0 = 0.003 # Probability a person has cancer
+    specificity = TN / (TN + FP)
+    sensitivity = TP / (TP + FN)
+    NPV = specificity * (1 - P_0) / ((specificity * (1 - P_0)) +( P_0 * (1 - sensitivity)))
+
+    print("Confusion Matrix:")
+    print(f"TN: {TN}  FP: {FP}")
+    print(f"FN: {FN}  TP: {TP}\n")
+
+    print(f"Recall: {TP/(TP+FN)}")
+    print(f"Precision: {TP/(TP+FP)}")
+
+    print( f"\nSpecificity: {specificity}", end = " ")
+    print(f"Sensitivity: {sensitivity}", end = "\n\n")
+    print(f"NPV: {NPV}")

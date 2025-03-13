@@ -14,7 +14,7 @@ class Dataset():
         self.test = test_data
 
 class Preprocessor():
-    def __init__(self, batch_size=32, seed=40):
+    def __init__(self, batch_size=64, seed=40):
         self.batch_size = batch_size  # Default batch size
         self.seed = seed
         self.set_seed()  # Call this function to set the seed
@@ -36,10 +36,15 @@ class Preprocessor():
         return train_dir, test_dir
 
     def transform_dataset(self, train_dir, test_dir):
+        # transform = transforms.Compose([
+        #     transforms.Resize((224, 224)),  # Resize
+        #     transforms.ToTensor(),  # Convert to tensor
+        #     transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])  # Normalize for RGB
+        # ])
         transform = transforms.Compose([
-            transforms.Resize((224, 224)),  # Resize
-            transforms.ToTensor(),  # Convert to tensor
-            transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5])  # Normalize for RGB
+            transforms.Resize((224, 224)),  # ResNet requires 224x224 images
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # ImageNet normalization
         ])
 
         train_data = datasets.ImageFolder(root=train_dir, transform=transform)
