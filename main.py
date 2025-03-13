@@ -38,8 +38,7 @@ class CNN(nn.Module):
         x = x.view(x.size(0), -1)
 
         # Fully connected layers with ReLU and Dropout
-        x = F.relu(self.fc1(x))
-        x = self.dropout(x)
+
         x = F.relu(self.fc2(x))
         x = self.dropout(x)
         x = self.output(x)  # No activation for output layer
@@ -69,7 +68,7 @@ if __name__ == '__main__':
     bce = nn.BCEWithLogitsLoss()
 
     model.to(device)
-    epochs = 10
+    epochs = 20
 
     # ----------------TRAIN STARTS HERE----------------
     model.train()
